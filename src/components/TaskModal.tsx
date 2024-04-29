@@ -58,7 +58,6 @@ function Modal({ data }) {
             Effortlessly manage your daily agenda with 'Today's Task'
           </DialogDescription>
         </DialogHeader>
-        {JSON.stringify(Tasks)}
         <div className="h-[28vh] max-h-[28vh] overflow-auto flex flex-col gap-2">
           {newCheckBox.map((_, index) => (
             <div
