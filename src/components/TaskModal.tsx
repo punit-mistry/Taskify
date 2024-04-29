@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +13,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/utils/supabase";
 
-function Modal({ data }:any) {
+function Modal({ data }: any) {
   const initialCheckBox = data.subtask.length > 0 ? new Array(data.subtask.length).fill(0) : [0];
   const [newCheckBox, setNewCheckBox] = useState(initialCheckBox);
   const [Tasks, setTasks] = useState(data.subtask.length > 0 ? data.subtask : [{ task: "", isChecked: false }]);
@@ -22,9 +23,9 @@ function Modal({ data }:any) {
     console.log("Adding new task", newCheckBox, Tasks);
   };
 
-  const handleChange = (e:any, index:number) => {
+  const handleChange = (e: any, index: number) => {
     const { checked } = e.target;
-    setTasks((prevTasks:any) => {
+    setTasks((prevTasks: any) => {
       const newTasks = [...prevTasks];
       newTasks[index] = { ...newTasks[index], isChecked: checked };
       return newTasks;
@@ -53,9 +54,9 @@ function Modal({ data }:any) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Today's Task</DialogTitle>
+          <DialogTitle>Today&apos;s Task</DialogTitle>
           <DialogDescription>
-            Effortlessly manage your daily agenda with 'Today's Task'
+            Effortlessly manage your daily agenda with Today&apos;s Task
           </DialogDescription>
         </DialogHeader>
         <div className="h-[28vh] max-h-[28vh] overflow-auto flex flex-col gap-2">

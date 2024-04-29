@@ -31,7 +31,7 @@ const Page = () => {
       </div>
       <div className="flex w flex-col md:flex-row flex-wrap justify-center m-4 md:m-0">
         {
-          loading && loadingArray.map(()=>(<div className=" bg-gray-500 h-32 animate-pulse w-full md:w-[32.33%] hover:shadow-2xl hover:cursor-pointer transition-shadow border-2 shadow-black m-1  flex items-center justify-center p-5 rounded-2xl"
+          loading && loadingArray.map((keys:number)=>(<div key={keys} className=" bg-gray-500 h-32 animate-pulse w-full md:w-[32.33%] hover:shadow-2xl hover:cursor-pointer transition-shadow border-2 shadow-black m-1  flex items-center justify-center p-5 rounded-2xl"
           >
             
             </div>))
