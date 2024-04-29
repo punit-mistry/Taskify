@@ -4,9 +4,9 @@ import Modal from "@/components/TaskModal";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 const Page = () => {
-  const [newArray, setNewArray] = useState([]);
-  const [loadingArray, setloadingArray] = useState(new Array(6).fill(0));
-  const [loading, setLoading] = useState(false);
+  const [newArray, setNewArray] = useState<any>([]);
+  const [loadingArray, setloadingArray] = useState<any>(new Array(6).fill(0));
+  const [loading, setLoading] = useState<boolean>(false);
   const addNewTask = async () => {
     const { data, error } = await supabase
       .from("taskify")
@@ -36,7 +36,7 @@ const Page = () => {
             
             </div>))
         }
-        {!loading && newArray.map((res, keys) => (
+        {!loading && newArray.map((res:any, keys:number) => (
           <div
             className="w-full md:w-[32.33%] hover:shadow-2xl hover:cursor-pointer transition-shadow border-2 shadow-black m-1  flex items-center justify-center p-5 rounded-2xl"
             key={keys}
