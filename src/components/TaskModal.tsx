@@ -12,22 +12,31 @@ import {
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/utils/supabase";
+import { useToast } from "@/components/ui/use-toast"
 
-function Modal({ data }: any) {
-  const initialCheckBox = data.subtask.length > 0 ? new Array(data.subtask.length).fill(0) : [0];
+function Modal({ selectedTask }: any) {
+  const { toast } = useToast()
+  const initialCheckBox = selectedTask?.subtask?.length > 0 ? new Array(selectedTask.subtask.length).fill(0) : [0];
   const [newCheckBox, setNewCheckBox] = useState(initialCheckBox);
-  const [Tasks, setTasks] = useState(data.subtask.length > 0 ? data.subtask : [{ task: "", isChecked: false }]);
+  const [Tasks, setTasks] = useState(selectedTask?.subtask?.length > 0 ? selectedTask.subtask : [{ task: "", isChecked: false }]);
 
   const addNewTask = () => {
     setNewCheckBox([...newCheckBox, 0]);
-    console.log("Adding new task", newCheckBox, Tasks);
   };
 
   const handleChange = (e: any, index: number) => {
-    const { checked } = e.target;
+    const { value} = e.target;
     setTasks((prevTasks: any) => {
       const newTasks = [...prevTasks];
-      newTasks[index] = { ...newTasks[index], isChecked: checked };
+      newTasks[index] = { ...newTasks[index], task:value };
+      return newTasks;
+    });
+  };
+
+  const handleCheckBox =(e: any, index: number) => {
+    setTasks((prevTasks: any) => {
+      const newTasks = [...prevTasks];
+      newTasks[index] = { ...newTasks[index],isChecked: !newTasks[index].isChecked };
       return newTasks;
     });
   };
@@ -36,25 +45,36 @@ function Modal({ data }: any) {
     const { data: newSubmitRecord, error } = await supabase
       .from("taskify")
       .update({ subtask: Tasks })
-      .eq("id", data.id)
+      .eq("id", selectedTask.id)
       .select();
     console.log(newSubmitRecord);
+    toast({
+      title: "Success !!",
+      description: "Changes Submited..",
+    })
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error !!",
+        description: "new error ",
+      })
+    }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          {data
-            ? new Date(data.created_at).toDateString() === "Invalid Date"
+          {selectedTask
+            ? new Date(selectedTask.created_at).toDateString() === "Invalid Date"
               ? "New Task Added !!"
-              : new Date(data.created_at).toDateString()
+              : new Date(selectedTask.created_at).toDateString()
             : "View"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Today&apos;s Task</DialogTitle>
+          <DialogTitle>Today&apos;s Task{selectedTask.id}</DialogTitle>
           <DialogDescription>
             Effortlessly manage your daily agenda with Today&apos;s Task
           </DialogDescription>
@@ -68,7 +88,7 @@ function Modal({ data }: any) {
               <Checkbox
                 id={`terms-${index}`}
                 checked={Tasks[index] ? Tasks[index].isChecked : false}
-                onChange={(e) => handleChange(e, index)}
+                onClick={(e) => handleCheckBox(e, index)}
               />
               <label
                 htmlFor={`terms-${index}`}
