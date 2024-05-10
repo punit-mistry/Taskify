@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -64,7 +65,7 @@ function Modal({ selectedTask }: any) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="ghost" >
           {selectedTask
             ? new Date(selectedTask.created_at).toDateString() === "Invalid Date"
               ? "New Task Added !!"
@@ -92,32 +93,34 @@ function Modal({ selectedTask }: any) {
               />
               <label
                 htmlFor={`terms-${index}`}
-                className="text-sm font-medium"
+                className="text-sm font-medium w-full"
               >
                 <input
                   type="text"
                   value={Tasks[index] ? Tasks[index].task : ""}
                   onChange={(e) => handleChange(e, index)}
-                  className="h-[1.5rem] rounded-sm py-0 px-2"
+                  className="h-[1.5rem] rounded-sm py-0 px-2 md:min-w-[100%]"
                   placeholder="Add new Task"
                 />
               </label>
             </div>
           ))}
         </div>
-        <DialogFooter>
+        <DialogFooter className="md:gap-0 gap-4">
           <Button
             type="submit"
             onClick={addNewTask}
           >
             Add New Task
           </Button>
+          <DialogClose asChild>
           <Button
             type="submit"
             onClick={submitTask}
           >
             Done
           </Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
