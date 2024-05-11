@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import Graph from "@/components/Graph";
-import { Console } from "console";
+// import Graph from "@/components/Graph";
 const Page = () => {
   const { toast } = useToast();
 
