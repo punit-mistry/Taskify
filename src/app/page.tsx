@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { IoMdRefreshCircle } from "react-icons/io";
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, AreaChart,Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const Page = () => {
   const { toast } = useToast();
@@ -139,14 +139,14 @@ console.log(id)
       <div className="m-5">
         {/* <Graph /> */}
         <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={taskCountData}>
+          <AreaChart data={taskCountData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="count" stroke="black" />
-          </LineChart>
+            <Area type="natural" dataKey="count" stroke="black" fill="grey" />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>
