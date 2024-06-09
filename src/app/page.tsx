@@ -52,16 +52,18 @@ const Page = () => {
   };
   const processTaskData = (tasks: any) => {
     const taskCount = tasks.reduce((acc:any, task:any) => {
+      console.log(task, "task",acc)
       const date = new Date(task.task_name).toDateString();
-      acc[date] = (acc[date] || 0) + 1;
+      acc[date] = { data:(acc[date] || 0) + 1,subTask:task.subtask.length};
       return acc;
     }, {});
-    
     const taskCountArray = Object.keys(taskCount).map(date => ({
       date,
-      count: taskCount[date]
+      count: taskCount[date].data,
+      Task:taskCount[date].subTask
     }));
-
+    
+    console.log(taskCountArray,"taskCountArray")
     setTaskCountData(taskCountArray);
   };
   const handleDelete = async(id:number,index:number) => {
@@ -108,7 +110,7 @@ console.log(id)
         <Button className="gap-2" onClick={refresh}> <IoMdRefreshCircle size={16}/>Refresh</Button>
       </div>
       {/* max-h-[40vh] */}
-      <div className="flex w flex-col md:flex-row flex-wrap justify-center m-4 md:m-0 gap-4 overflow-auto">
+      <div className="flex w flex-col md:flex-row flex-wrap justify-center h-max md:h-[40vh] m-4 md:m-0 gap-4 overflow-auto">
         {loading &&
           loadingArray.map((keys: number) => (
             <div
@@ -145,7 +147,8 @@ console.log(id)
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area type="natural" dataKey="count" stroke="black" fill="grey" />
+            <Area type="natural" dataKey="Task" stroke="black" fill="grey" />
+            <Area type="basis" dataKey="count" stroke="black" fill="black" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
