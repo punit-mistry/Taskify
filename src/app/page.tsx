@@ -127,7 +127,7 @@ console.log(id)
             </div>
           ))}
       </div>
-      <div className="mt-5">
+      <div className="m-5">
         {/* <Graph /> */}
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={taskCountData}>
@@ -136,7 +136,7 @@ console.log(id)
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="count" stroke="#8884d8" />
+            <Line type="monotone" dataKey="count" stroke="black" />
           </LineChart>
         </ResponsiveContainer>
       </div>
