@@ -5,20 +5,24 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-// import Graph from "@/components/Graph";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
 const Page = () => {
   const { toast } = useToast();
 
   const [newArray, setNewArray] = useState<any>([]);
   const [loadingArray, setloadingArray] = useState<any>(new Array(6).fill(0));
   const [loading, setLoading] = useState<boolean>(false);
+  const [taskCountData, setTaskCountData] = useState<any[]>([]);
   const addNewTask = async () => {
     const { data, error } = await supabase
       .from("taskify")
       .insert([{ task_name: new Date().toDateString() }])
       .select();
     if (data) {
-      setNewArray([...newArray, ...data]);
+      const updatedArray = [...newArray, ...data];
+      setNewArray(updatedArray);
+      processTaskData(updatedArray); // Update task count data// Update task count data
       toast({
         title: "Success !!",
         description: "New Task Added ..",
@@ -35,12 +39,28 @@ const Page = () => {
     setLoading(true);
     fetchTask();
   }, []);
+  
   const fetchTask = async () => {
     let { data: taskify, error } = await supabase.from("taskify").select("*");
     setNewArray(taskify);
+    processTaskData(taskify)
     setTimeout(() => {
       setLoading(false);
     }, 500);
+  };
+  const processTaskData = (tasks: any) => {
+    const taskCount = tasks.reduce((acc:any, task:any) => {
+      const date = new Date(task.task_name).toDateString();
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
+    
+    const taskCountArray = Object.keys(taskCount).map(date => ({
+      date,
+      count: taskCount[date]
+    }));
+
+    setTaskCountData(taskCountArray);
   };
   const handleDelete = async(id:number,index:number) => {
     setLoading(true);
@@ -107,9 +127,19 @@ console.log(id)
             </div>
           ))}
       </div>
-      {/* <div>
-        <Graph />
-      </div> */}
+      <div className="mt-5">
+        {/* <Graph /> */}
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart data={taskCountData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="count" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
