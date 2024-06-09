@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { useToast } from "@/components/ui/use-toast";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { IoMdRefreshCircle } from "react-icons/io";
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const Page = () => {
@@ -88,15 +90,22 @@ console.log(id)
         updateTask.splice(index, 1); // Remove one element at the specified index
         console.log(updateTask);
         setNewArray(updateTask); // Update the state with the modified array
-      setLoading(false);
-
-        
+      setLoading(false); 
       }
+  };
+
+  const refresh = async () => {
+    setLoading(true);
+    fetchTask();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   };
   return (
     <div className="flex flex-col w-full max-h-[90vh]  ">
-      <div className="flex flex-row-reverse px-5 py-2">
+      <div className="flex flex-row-reverse gap-4 px-5 py-2">
         <Button onClick={addNewTask}> Add Task</Button>
+        <Button className="gap-2" onClick={refresh}> <IoMdRefreshCircle size={16}/>Refresh</Button>
       </div>
       {/* max-h-[40vh] */}
       <div className="flex w flex-col md:flex-row flex-wrap justify-center m-4 md:m-0 gap-4 overflow-auto">
