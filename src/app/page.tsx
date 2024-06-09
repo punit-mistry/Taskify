@@ -18,7 +18,7 @@ const Page = () => {
       .insert([{ task_name: new Date().toDateString() }])
       .select();
     if (data) {
-      setNewArray([...newArray, data]);
+      setNewArray([...newArray, ...data]);
       toast({
         title: "Success !!",
         description: "New Task Added ..",
